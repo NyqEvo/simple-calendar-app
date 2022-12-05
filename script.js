@@ -13,10 +13,10 @@ function init() {
   checkTime()
   var schedule = localStorage.getItem("schedule");
   var parsedSchedule = JSON.parse(schedule);
-  daySchedule = parsedSchedule
   $('textarea').each(function(i) {
-    $(this).text(daySchedule.plan[i]);
+    $(this).text(parsedSchedule.plan[i]);
   })
+  daySchedule = parsedSchedule
 }
 
 function currentTime() {
@@ -57,10 +57,7 @@ var stringSchedule = JSON.stringify(daySchedule);
 localStorage.setItem("schedule", stringSchedule);
 })
 
-
 init()
-  // var newAddition = submitButtonEL.value
-  // submitButtonEL.parent().$('textarea').text(event)
 
 
 // $(function () {
