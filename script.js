@@ -25,16 +25,11 @@ function currentTime() {
 
 function checkTime() {
     $('.hour').each(function() {
-      console.log($(this).attr("data-hour"))
-      console.log(dayjs().format('H'))
       if ($(this).attr("data-hour") === dayjs().format('HH')) {
-        // $(this).parent().removeClass("past future")
         $(this).parent().addClass("present")
       } else if ($(this).attr("data-hour") < dayjs().format('HH')) {
-        // $(this).parent().removeClass("future present")
         $(this).parent().addClass("past")
       } else {
-        // $(this).parent().removeClass("present past")
         $(this).parent().addClass("future")
       }
     })
@@ -43,7 +38,6 @@ function checkTime() {
 $(":button").click(function(event) {
   var specifyButton = $(this).parent().attr("id");
   var content = $(this).siblings("textarea").val();
-  console.log(content);
   for (i = 0; i < daySchedule.time.length; i++) {
     if (daySchedule.time[i] === specifyButton) {
       daySchedule.plan[i] = content;
