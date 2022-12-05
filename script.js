@@ -8,20 +8,47 @@ var daySchedule = {
   plan: ['', '', '', '', '', '', '', '']
 };
 
+function init() {
+  currentTime()
+  checkTime()
+  var schedule = localStorage.getItem("schedule");
+  var parsedSchedule = JSON.parse(schedule);
+  daySchedule = parsedSchedule
+  $('textarea').each(function(i) {
+    $(this).text(daySchedule.plan[i]);
+  })
+}
+
 function currentTime() {
   setInterval(function () {
     var time = dayjs().format('h:mmA');
     var date = dayjs().format('MMMM DD, YYYY')
-    $("#currentDay").text(date + "   " + time)
+    $("#currentDay").text(date + "\n" + time)
   }, 1000)
 }
 
+function checkTime() {
+  setInterval(function(){
+    $('.hour').each(function() {
+      if ($(this).text() === dayjs().format('hA')) {
+        $(this).parent().removeClass("past future")
+        $(this).parent().addClass("present")
+      } else if (parseInt($(this).attr(".data-hour"))>parseInt(dayjs().format("H"))) {
+        $(this).parent().removeClass("future present")
+        $(this).parent().addClass("past")
+      } else {
+        $(this).parent().removeClass("present past")
+        $(this).parent().addClass("future")
+      }
+    })
+  },1000)
+}
 
-$(":button").click(function() {
+$(":button").click(function(event) {
   var specifyButton = $(this).parent().attr("id");
-  var content = $(this).siblings("textarea").text();
+  var content = $(this).siblings("textarea").val();
   console.log(content);
-  for (i = 0; i < daySchedule.length; i++) {
+  for (i = 0; i < daySchedule.time.length; i++) {
     if (daySchedule.time[i] === specifyButton) {
       daySchedule.plan[i] = content;
     }
@@ -29,6 +56,9 @@ $(":button").click(function() {
 var stringSchedule = JSON.stringify(daySchedule);
 localStorage.setItem("schedule", stringSchedule);
 })
+
+
+init()
   // var newAddition = submitButtonEL.value
   // submitButtonEL.parent().$('textarea').text(event)
 
@@ -53,4 +83,3 @@ localStorage.setItem("schedule", stringSchedule);
 //   //
 //   // TODO: Add code to display the current date in the header of the page.
 // });
- currentTime()
