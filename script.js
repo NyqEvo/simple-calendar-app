@@ -3,20 +3,23 @@
 // in the html.
 var submitButtonEL = $(":button");
 var timeDisplayEl = $("#currentDay");
-var daySchedule = {
-  time: ["nine", "ten", "eleven", "twelve", "one", "two", "three", "four"],
-  plan: ['', '', '', '', '', '', '', '']
-};
+if (localStorage.getItem("schedule") === null) {
+  localStorage.setItem("schedule", JSON.stringify({
+    time: ["nine", "ten", "eleven", "twelve", "one", "two", "three", "four"],
+    plan: ['', '', '', '', '', '', '', '']
+    }))}
+var daySchedule = JSON.parse(localStorage.getItem("schedule"))
+// var daySchedule = {
+//   time: ["nine", "ten", "eleven", "twelve", "one", "two", "three", "four"],
+//   plan: ['', '', '', '', '', '', '', '']
+// };
 
 function init() {
   currentTime()
   checkTime()
-  var schedule = localStorage.getItem("schedule");
-  var parsedSchedule = JSON.parse(schedule);
   $('textarea').each(function(i) {
-    $(this).text(parsedSchedule.plan[i]);
+    $(this).text(daySchedule.plan[i]);
   })
-  daySchedule = parsedSchedule
 }
 
 function currentTime() {
@@ -33,7 +36,7 @@ function checkTime() {
       if ($(this).text() === dayjs().format('hA')) {
         $(this).parent().removeClass("past future")
         $(this).parent().addClass("present")
-      } else if (parseInt($(this).attr(".data-hour"))>parseInt(dayjs().format("H"))) {
+      } else if (parseInt($(this).attr(".data-hour")) > parseInt(dayjs().format("H"))) {
         $(this).parent().removeClass("future present")
         $(this).parent().addClass("past")
       } else {
